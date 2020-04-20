@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block content %}
+
+<br>
+
+<body style="background-color: #34495e;">
+
+<div class="row ml-2 mr-2">
+	{% for pedido in pedidos %}
+	  <div class="col-sm-3">
+	    <div class="card mt-3">
+	    	<div class="card-header">
+	      		<h5 class="card-title">Pedido Nº: {{ pedido.id }}</h5>
+	        	<h5 class="card-title">{{ pedido.cliente }}</h5>
+			</div>
+	      <div class="card-body pb-1">
+		        <p class="card-text">Valor Acordado: R$ {{ pedido.valor_acordado }}</p>
+		        <p class="card-text">Valor Pago: R$ {{ pedido.valor_pago }}</p>
+		        <p class="card-text">Status: {{ pedido.status }}</p>
+		        <p class="card-text">Prazo: {{ pedido.prazo }}</p>
+		        <a href= "{% url 'pedido' pedido.id  %}" class="stretched-link"></a>
+	      </div>
+	    </div>
+	  </div>
+	  <br>
+	{% endfor %}
+</div>
+
+
+{% endblock %}

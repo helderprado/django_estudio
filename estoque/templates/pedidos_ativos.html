@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% load etiquetada %}
+
+{% load estampada %}
+
+{% load prazo %}
+
+{% load bootstrap %}
+
+{% block content %}
+
+<br>
+
+<body style="background-color: #34495e;">
+
+<style>
+
+	.card {
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+	}	
+	
+	.card-text-0 {
+		background-color: #f6e58d;
+		font-weight: bold;
+		color: #2c3e50;
+	}
+
+	.card-text-prazo {
+		background-color: #2ecc71;
+		font-weight: bold;
+		color: #2c3e50;
+	}
+
+	.card-text-atrasado {
+		background-color: #e74c3c;
+		font-weight: bold;
+		color: white;
+	}
+
+
+
+</style>
+
+
+<div class="row ml-2 mr-2">
+	<div class="col-sm-3">
+	    <div class="card mt-3">
+	    	<div class="card-header">
+	      		<h5 class="card-title"><center>Pedidos Ativos</center></h5>
+			</div>
+	      <div class="card-body pb-4">
+		        <p class="card-text"><h1 class="display-4"><center>{{ pedidos_ativos.all.count }}</center></h1></p>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-sm-3">
+	    <div class="card mt-3">
+	    	<div class="card-header">
+	      		<h5 class="card-title"><center>Quantidade de peças</center></h5>
+			</div>
+	      <div class="card-body pb-4">
+		        <p class="card-text"><h1 class="display-4"><center>{{ contagem }}</center></h1></p>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-sm-3">
+	    <div class="card mt-3">
+	    	<div class="card-header">
+	      		<h5 class="card-title"><center>Valores Acordados</center></h5>
+			</div>
+	      <div class="card-body pb-4">
+		        <p class="card-text"><h1 class="display-4"><center>R$ {{ soma_valores_acordados }}</center></h1></p>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-sm-3">
+	    <div class="card mt-3">
+	    	<div class="card-header">
+	      		<h5 class="card-title"><center>Pagamentos Realizados</center></h5>
+			</div>
+	      <div class="card-body pb-4">
+		        <p class="card-text"><h1 class="display-4"><center>R$ {{ soma_valores_pagos }}</center></h1></p>
+	      </div>
+	    </div>
+	  </div>
+</div>
+
+<div class="row ml-2 mr-2">
+	{% for pedido in pedidos_ativos %}
+		{% if pedido.prazo|prazo == 0 %}
+		  <div class="col-sm-3">
+		    <div class="card mt-3">
+		    	<div class="card-header">
+		      		<h5 class="card-title">Pedido Nº: {{ pedido.id }}</h5>
+		        	<h5 class="card-title">{{ pedido.cliente }}</h5>
+				</div>
+		      <div class="card-body pb-1">
+			        <p class="card-text">Valor Acordado: R$ {{ pedido.valor_acordado }}</p>
+			        <p class="card-text">Valor Pago: R$ {{ pedido.valor_pago }}</p>
+			        <p class="card-text">Status: {{ pedido.status }}</p>
+			        <p class="card-text">Data da Entrega: {{ pedido.prazo }}</p>
+			        <p class="card-text-0">Prazo: {{ pedido.prazo|prazo }}</p>
+						<table class="table table-sm">
+							<tr>
+								<th>Detalhes da Produção</th>
+							</tr>
+						</table>
+					<p class="card-text">Total de itens: {{ pedido.itenspedido_set.all.count }}</p>
+					<p class="card-text">Etiquetadas: {{ pedido.itenspedido_set | etiquetada }}</p>
+					<p class="card-text">Estampadas: {{ pedido.itenspedido_set | estampada }}</p>
+			        <a href= "{% url 'pedido' pedido.id  %}" class="stretched-link"></a>
+		      </div>
+		    </div>
+		  </div>
+		{% elif pedido.prazo|prazo < 0 %}
+		  <div class="col-sm-3">
+		    <div class="card mt-3">
+		    	<div class="card-header">
+		      		<h5 class="card-title">Pedido Nº: {{ pedido.id }}</h5>
+		        	<h5 class="card-title">{{ pedido.cliente }}</h5>
+				</div>
+		      <div class="card-body pb-1 ">
+			        <p class="card-text">Valor Acordado: R$ {{ pedido.valor_acordado }}</p>
+			        <p class="card-text">Valor Pago: R$ {{ pedido.valor_pago }}</p>
+			        <p class="card-text">Status: {{ pedido.status }}</p>
+			        <p class="card-text">Data da Entrega: {{ pedido.prazo }}</p>
+			        <p class="card-text-atrasado">Prazo: {{ pedido.prazo | prazo }}</p>
+						<table class="table table-sm">
+							<tr>
+								<th>Detalhes da Produção</th>
+							</tr>
+						</table>
+					<p class="card-text">Total de itens: {{ pedido.itenspedido_set.all.count }}</p>
+					<p class="card-text">Etiquetadas: {{ pedido.itenspedido_set | etiquetada }}</p>
+					<p class="card-text">Estampadas: {{ pedido.itenspedido_set | estampada }}</p>
+			        <a href= "{% url 'pedido' pedido.id  %}" class="stretched-link"></a>
+		      </div>
+		    </div>
+		  </div>
+		{% else %}
+		  <div class="col-sm-3">
+		    <div class="card mt-3">
+		    	<div class="card-header">
+		      		<h5 class="card-title">Pedido Nº: {{ pedido.id }}</h5>
+		        	<h5 class="card-title">{{ pedido.cliente }}</h5>
+				</div>
+		      <div class="card-body pb-1 ">
+			        <p class="card-text">Valor Acordado: R$ {{ pedido.valor_acordado }}</p>
+			        <p class="card-text">Valor Pago: R$ {{ pedido.valor_pago }}</p>
+			        <p class="card-text">Status: {{ pedido.status }}</p>
+			        <p class="card-text">Data da Entrega: {{ pedido.prazo }}</p>
+			        <p class="card-text-prazo">Prazo: {{ pedido.prazo | prazo }}</p>
+						<table class="table table-sm">
+							<tr>
+								<th>Detalhes da Produção</th>
+							</tr>
+						</table>
+					<p class="card-text">Total de itens: {{ pedido.itenspedido_set.all.count }}</p>
+					<p class="card-text">Etiquetadas: {{ pedido.itenspedido_set | etiquetada }}</p>
+					<p class="card-text">Estampadas: {{ pedido.itenspedido_set | estampada }}</p>
+			        <a href= "{% url 'pedido' pedido.id  %}" class="stretched-link"></a>
+		      </div>
+		    </div>
+		  </div>
+		{% endif %}
+	  <br>
+	{% endfor %}
+</div>
+
+{% endblock %}

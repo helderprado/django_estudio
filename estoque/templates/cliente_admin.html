@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block content %}
+
+{% load prazo %}
+
+<body style="background-color: #34495e;">
+
+<style>
+
+	.content-table {
+	  border-collapse: collapse;
+	  margin: 0 auto;
+	  font-size: 0.9em;
+	  min-width: 400px;
+	  border-radius: 5px 5px 0 0;
+	  overflow: hidden;
+	  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+	}
+
+	.content-table thead tr {
+	  background-color: #2c3e50;
+	  color: #ffffff;
+	  text-align: left;
+	  font-weight: bold;
+	}
+
+	.content-table th,
+	.content-table td {
+	  padding: 12px 15px;
+	}
+
+	.content-table tbody tr {
+	  border-bottom: 1px solid #dddddd;
+	  background-color: white;
+	}
+
+	.content-table tbody tr:last-of-type {
+	  border-bottom: 2px solid #2c3e50;
+	}
+
+	.content-table tbody tr.active-row {
+	  font-weight: bold;
+	  color: #009879;
+	}
+
+	.content-table tr:hover td {
+	  color: #2c3e50;
+	  background-color: #ecf0f1;
+	}
+
+</style>
+
+<br>
+
+<div class='container'>
+	<div class="row">
+		<div class="col-md-5 text-white">
+			<h5>Cliente: {{ cliente.nome }}</h5>
+			<hr>
+			<div class="card card-body">
+				<a class="btn btn-primary  btn-sm btn-block" href="">Atualizar dados do cliente</a>
+				<table class="table table-sm">
+					<tr>
+						<th>E-mail: {{ cliente.email }}</th>
+						<th></th>
+					</tr>
+					<tr>
+						<th>Contato: {{ cliente.telefone }}</th>
+						<th></th>
+					</tr>
+					<tr>
+						<th>Endereço: {{ cliente.endereco }}</th>
+						<th></th>
+					</tr>
+					<tr>
+						<th>Pedidos realizados: {{ cliente.pedidos_set.all.count }}</th>
+					</tr>
+					<tr>
+						<th>Pedidos ativos: {{ pedidos_ativos }}</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<div class='container'>
+	<table class="content-table">
+		<thead>
+			<tr>
+				<center><h1 class="display-5 text-white ">Histórico de pedidos</h1></center>
+			</tr>
+			<tr>
+			    <th><center>Nº do Pedido</center></th>
+			    <th><center>Data do Pedido</center></th>
+			    <th><center>Status</center></th>
+			    <th><center>Prazo</center></th>
+			    <th><center>Quantidade de peças</center></th>
+			    <th><center>Valor Acordado</center></th>
+			    <th><center>Valor Pago</center></th>
+			</tr>
+		</thead>
+			<tbody>
+				{% for pedido in pedidos %}
+					<tr onclick=window.location="{% url 'pedido' pedido.id %}">
+						<td><center>{{ pedido.id }}</center></td>
+						<td><center>{{ pedido.data }}</center></td>
+						<td><center>{{ pedido.status }}</center></td>
+						<td><center>{{ pedido.prazo | prazo }}</center></td>
+						<td><center>{{ pedido.itenspedido_set.all.count }}</center></td>
+						<td><center>{{ pedido.valor_acordado }}</center></td>
+						<td><center>{{ pedido.valor_pago }}</center></td>
+					</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+
+
+{% endblock %}

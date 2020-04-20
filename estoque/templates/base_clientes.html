@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% load static %}
+
+{% block content %}
+
+<body style="background-color: #34495e;">
+
+<style>
+
+	.content-table {
+	  border-collapse: collapse;
+	  margin: 0 auto;
+	  font-size: 0.9em;
+	  min-width: 400px;
+	  border-radius: 5px 5px 0 0;
+	  overflow: hidden;
+	  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+	}
+
+	.content-table thead tr {
+	  background-color: #2c3e50;
+	  color: #ffffff;
+	  text-align: left;
+	  font-weight: bold;
+	}
+
+	.content-table th,
+	.content-table td {
+	  padding: 12px 15px;
+	}
+
+	.content-table tbody tr {
+	  border-bottom: 1px solid #dddddd;
+	  background-color: white;
+	}
+
+	.content-table tbody tr:last-of-type {
+	  border-bottom: 2px solid #2c3e50;
+	}
+
+	.content-table tbody tr.active-row {
+	  font-weight: bold;
+	  color: #009879;
+	}
+
+	.content-table tr:hover td {
+	  color: #2c3e50;
+	  background-color: #ecf0f1;
+	}
+
+</style>
+
+<br>
+
+<div class='container'>
+	<table class="content-table">
+		<thead>
+			<tr>
+				<center><h1 class="display-3 text-white ">Base de clientes</h1></center>
+			</tr>
+			<tr>
+				<th><center>Usuário</center></th>
+				<th><center>Data</center></th>
+			    <th><center>Nome do Cliente</center></th>
+			    <th><center>E-mail</center></th>
+			    <th><center>Contato</center></th>
+			    <th><center>Pedidos</center></th>
+			</tr>
+		</thead>
+			<tbody>
+				{% for cliente in base_clientes %}
+					<tr onclick=window.location="{% url 'cliente_admin' cliente.id %}">
+						<td><center>{{ cliente.user }}</center></td>
+						<td><center>{{ cliente.data|date:"SHORT_DATE_FORMAT" }}</center></td>
+						<td><center>{{ cliente }}</center></td>
+						<td><center>{{ cliente.user.email }}</center></td>
+						<td><center>{{ cliente.telefone }}</center></td>
+						<td><center>{{ cliente.pedidos_set.all.count }}</center></td>
+					</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}

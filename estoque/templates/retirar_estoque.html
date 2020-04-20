@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block content %}
+
+<br>
+
+<body style="background-color: #34495e;">
+
+<style>
+
+	.content-table {
+	  border-collapse: collapse;
+	  margin: 0 auto;
+	  font-size: 0.9em;
+	  min-width: 400px;
+	  border-radius: 5px 5px 0 0;
+	  overflow: hidden;
+	  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+	}
+
+	.content-table thead tr {
+	  background-color: #2c3e50;
+	  color: #ffffff;
+	  text-align: left;
+	  font-weight: bold;
+	}
+
+	.content-table th,
+	.content-table td {
+	  padding: 12px 15px;
+	}
+
+	.content-table tbody tr {
+	  border-bottom: 1px solid #dddddd;
+	  background-color: white;
+	}
+
+	.content-table tbody tr:last-of-type {
+	  border-bottom: 2px solid #2c3e50;
+	}
+
+	.content-table tbody tr.active-row {
+	  font-weight: bold;
+	  color: #009879;
+	}
+
+	.content-table tr:hover td {
+	  color: #2c3e50;
+	  background-color: #ecf0f1;
+	}
+
+</style>
+
+
+<div class="jumbotron text-white ml-3 mr-3 pb-4 pt-4" style="background-color: #2c3e50;">
+		<h1>Retirada de itens</h1>
+		<br>
+		<form method='POST'>
+			{% csrf_token %}
+			<div class="form-row">
+				<div class="form-group col-md-3 mb-0">
+					{{ form.tipo|bootstrap }}
+				</div>
+				<div class="form-group col-md-3 mb-0">
+					{{ form.cor|bootstrap }}
+				</div>
+				<div class="form-group col-md-1 mb-0">
+					{{ form.MBL|bootstrap }}
+				</div>
+				<div class="form-group col-md-1 mb-0">
+					{{ form.GBL|bootstrap }}
+				</div>
+				<div class="form-group col-md-1 mb-0">
+					{{ form.P|bootstrap }}
+				</div>
+				<div class="form-group col-md-1 mb-0">
+					{{ form.M|bootstrap }}
+				</div>
+				<div class="form-group col-md-1 mb-0">
+					{{ form.G|bootstrap }}
+				</div>
+				<div class="form-group col-md-1 mb-0">
+					{{ form.GG|bootstrap }}
+				</div>
+					{{ form.movimentacao.as_hidden }}
+			</div>
+				<input type='submit' class="btn btn-danger" value='Retirar Item'>
+		</form>
+</div>
+
+<div class="container-fluid">
+    <h1 class="display-4 text-white"><center>Histórico de Movimentações</center></h1>
+		<table class= "content-table" >
+				<thead>
+					<tr>
+						<th><center>Data</center></th>
+			  			<th><center>Tipo</center></th>
+						<th><center>Cor</center></th>
+						<th><center>M (BL)</center></th>
+						<th><center>G (BL)</center></th>
+						<th><center>P</center></th>
+						<th><center>M</center></th>
+						<th><center>G</center></th>
+						<th><center>GG</center></th>
+						<th><center>Movimentação</center></th>
+						<th><center>Editar</center></th>
+						<th><center>Deletar</center></th>
+				   	</tr>
+				</thead>
+					<tbody>
+						{% for item in estoque %}
+							<tr>
+								<td><center>{{ item.data }}</center></td>
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.MBL }}</center></td>
+								<td><center>{{ item.GBL }}</center></td>
+								<td><center>{{ item.P }}</center></td>
+								<td><center>{{ item.M }}</center></td>
+								<td><center>{{ item.G }}</center></td>
+								<td><center>{{ item.GG }}</center></td>
+								<td><center>{{ item.movimentacao }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'editar_produto' item.id  %}" role="button">Editar</a></center></td>
+								<td><center><a class="btn btn-danger" href = "{% url 'deletar_produto' item.id  %}" role="button">Deletar</a></center></td>
+							</tr>
+						{% endfor %}
+				</tbody>
+		</table>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0, scrollpos);
+    });
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+
+
+{% endblock %}

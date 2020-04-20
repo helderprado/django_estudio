@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block content %}
+
+<body style="background-color: #34495e;">
+    
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center" >
+            <div class="row">
+                <div class="col-lg-6 col-md-8 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded shadow shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">Cadastrar Pedido</h3>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" method="POST">
+                            		{% csrf_token %}
+                                <div class="form-group">
+                                	{{ form.cliente|bootstrap }}
+                                </div>
+                                <div class="form-group">
+                                	{{ form.valor_acordado|bootstrap }}
+                                </div>
+                                <div class="form-group">
+                                	{{ form.prazo|bootstrap }}
+                                </div>
+                                <div class="form-group">
+                                	{{ form.valor_pago.as_hidden }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.status.as_hidden }}
+                                </div>
+                                <button type="submit" class="btn btn-success btn-lg float-right">Cadastrar</button>
+                            </form>
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+<!--/container-->
+
+{% endblock %}
+
